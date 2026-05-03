@@ -100,7 +100,7 @@ env:
 
 jobs:
   Build-Armbian:
-    runs-on: ubuntu-24.04 # 默认使用 ARM64 架构，非 ARM64 设备请移除 '-arm'
+    runs-on: ubuntu-24.04 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -167,7 +167,12 @@ jobs:
 
       - name: Compile Armbian [ ${{ inputs.BOARD }} ${{ inputs.BRANCH }} ${{ inputs.RELEASE }} ]
         working-directory: /mnt/workdir/build
+        env:
+          BOARD: ${{ inputs.BOARD }}
+          BRANCH: ${{ inputs.BRANCH }}
+          RELEASE: ${{ inputs.RELEASE }}
         run: |
+          cp -r ${GITHUB_WORKSPACE}/userpatches /mnt/workdir/build/
           ./compile.sh build BOARD=${{ inputs.BOARD }} BRANCH=${{ inputs.BRANCH }} RELEASE=${{ inputs.RELEASE }} BUILD_MINIMAL=${{ inputs.BUILD_MINIMAL }} BUILD_DESKTOP=${{ inputs.BUILD_DESKTOP }} \
             PREFER_DOCKER=${{ inputs.PREFER_DOCKER }} DOCKER_ARMBIAN_BASE_IMAGE=${{ inputs.DOCKER_ARMBIAN_BASE_IMAGE }} COMPRESS_OUTPUTIMAGE=xz KERNEL_CONFIGURE=no SHARE_LOG=yes DEB_COMPRESS=xz
 
