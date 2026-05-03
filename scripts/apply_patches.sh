@@ -41,12 +41,12 @@ else
     KERNELPATCHDIR=""
     FAMILY_CONF="config/sources/families/${BOARDFAMILY}.conf"
     if [ -f "${FAMILY_CONF}" ]; then
-        KERNELPATCHDIR=$(grep -E '^\s*KERNELPATCHDIR=' "${FAMILY_CONF}" | tail -1 | sed 's/^[^=]*=\s*["'"'"']\?//;s/["'"'"']\?$//')
+        KERNELPATCHDIR=$(grep -E '^\s*KERNELPATCHDIR=' "${FAMILY_CONF}" | tail -1 | sed -E 's/^[^=]*=\s*//; s/\s*#.*//; s/["'"'"'"]//g')
     fi
 
     # 如果没找到，再搜索 include 文件
     if [ -z "${KERNELPATCHDIR}" ]; then
-        KERNELPATCHDIR=$(find config/sources/families/include/ -type f -name "${BOARDFAMILY}*.inc" -exec grep -l "KERNELPATCHDIR" {} \; | xargs -r grep "KERNELPATCHDIR" | tail -1 | sed 's/^.*KERNELPATCHDIR=//;s/[[:space:]]*#.*//' | tr -d '"'"'"' || true)
+        KERNELPATCHDIR=$(find ... | xargs -r grep "KERNELPATCHDIR" | tail -1 | sed 's/^.*KERNELPATCHDIR=//;s/[[:space:]]*#.*//' | tr -d '"'"'"' || true)
     fi
 
     if [ -z "${KERNELPATCHDIR}" ]; then
