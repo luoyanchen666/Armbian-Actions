@@ -157,6 +157,10 @@ jobs:
       - name: Apply patches
         if: ${{ inputs.APPLY_PATCHES == 'yes' }}
         working-directory: /mnt/workdir/build
+        env:
+          BOARD: ${{ inputs.BOARD }}
+          BRANCH: ${{ inputs.BRANCH }}
+          RELEASE: ${{ inputs.RELEASE }}
         run: |
           "${GITHUB_WORKSPACE}/scripts/apply_patches.sh"
           "${GITHUB_WORKSPACE}/scripts/rename_to_conf.sh"
