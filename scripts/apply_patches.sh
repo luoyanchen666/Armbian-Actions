@@ -44,10 +44,6 @@ else
         KERNELPATCHDIR=$(grep -E '^\s*KERNELPATCHDIR=' "${FAMILY_CONF}" | tail -1 | sed -E 's/^[^=]*=\s*//; s/\s*#.*//; s/["'"'"'"]//g')
     fi
 
-    # 如果没找到，再搜索 include 文件
-    if [ -z "${KERNELPATCHDIR}" ]; then
-        KERNELPATCHDIR=$(find ... | xargs -r grep "KERNELPATCHDIR" | tail -1 | sed 's/^.*KERNELPATCHDIR=//;s/[[:space:]]*#.*//' | tr -d '"'"'"' || true)
-    fi
 
     if [ -z "${KERNELPATCHDIR}" ]; then
         echo "    WARNING: Could not find KERNELPATCHDIR for family ${BOARDFAMILY}, skipping kernel patches."
