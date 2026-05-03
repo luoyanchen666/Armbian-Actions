@@ -1,0 +1,99 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "allwinner,sun8i-h3";
+
+    /* ======================================== */
+    /* 1. 注册硬件背光子系统 (DRM驱动的标准绝配) */
+    /* ======================================== */
+    fragment@0 {
+        target-path = "/";
+        __overlay__ {
+            lcd_bl: backlight {
+                compatible = "gpio-backlight";
+                gpios = <&pio 0 0 0>; /* PA0 高电平点亮 */
+                default-on;
+            };
+        };
+    };
+
+    /* ======================================== */
+    /* 2. 注册 SPI1 的硬件引脚 (PA14, PA15, PA16) */
+    /* ======================================== */
+    fragment@1 {
+        target = <&pio>;
+        __overlay__ {
+            spi1_pins: spi1_pins {
+                pins = "PA14", "PA15", "PA16";
+                function = "spi1";
+            };
+        };
+    };
+
+    /* ======================================== */
+    /* 3. 屏幕和触摸完美共用 SPI1 总线 */
+    /* ======================================== */
+    fragment@2 {
+        target = <&spi1>;
+        __overlay__ {
+            status = "okay";
+            pinctrl-names = "default";
+            pinctrl-0 = <&spi1_pins>;
+            
+            /* 定义双片选：CS0是屏幕(PA13)，CS1是触摸(PA8)，均为低电平有效 */
+            cs-gpios = <&pio 0 13 1>, <&pio 0 8 1>; 
+            
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            /* --- 现代化的 DRM 屏幕节点 (挂在CS0) --- */
+            display@0 {
+                /* 【接头暗号】呼叫您刚刚亲手编译的魔改版 DRM 驱动！ */
+                compatible = "adafruit,yx240qv29";
+                reg = <0>;
+                status = "okay";
+                
+                /* DMA 硬件加速，轻松跑满 32MHz */
+                spi-max-frequency = <52000000>;
+                
+                /* DRM 驱动标准的旋转参数写法 */
+                rotation = <270>;
+                
+                /* 控制引脚 */
+                reset-gpios = <&pio 0 3 1>; /* PA3 低电平复位 */
+                dc-gpios = <&pio 0 2 0>;    /* PA2 数据/命令 */
+                
+                /* 绑定顶部的背光子系统 */
+                backlight = <&lcd_bl>;
+            };
+
+            /* --- 完美防抖的触摸节点 (挂在CS1) --- */
+            touch@1 {
+                compatible = "ti,ads7846";
+                reg = <1>;
+                status = "okay";
+                
+                /* 触摸读取非常脆弱，维持 2MHz 最稳 */
+                spi-max-frequency = <2000000>;
+                
+                interrupt-parent = <&pio>;
+                interrupts = <0 7 2>; /* PA7 下降沿中断 */
+                pendown-gpio = <&pio 0 7 1>; /* PA7 低电平有效 */
+                
+                /* Armbian 新内核专属的防抖与校准参数 */
+                ti,keep-vref-on;
+                ti,vref-delay-usecs = <100>;
+                ti,penirq-recheck-delay-usecs = <100>;
+                
+                ti,x-min = /bits/ 16 <200>;
+                ti,x-max = /bits/ 16 <3900>;
+                ti,y-min = /bits/ 16 <200>;
+                ti,y-max = /bits/ 16 <3900>;
+                ti,x-plate-ohms = /bits/ 16 <60>;
+                ti,pressure-max = /bits/ 16 <255>;
+                ti,swap-xy = <1>;
+            };
+        };
+    };
+};
