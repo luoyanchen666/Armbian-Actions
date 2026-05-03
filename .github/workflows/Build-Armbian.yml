@@ -20,6 +20,7 @@ on:
           - 'jp-tvbox'
           - 'nanopi-r3s'
           - 'onecloud'
+          - 'orangepizero '
       BRANCH:
         description: 'Kernel branch'
         default: 'current'
@@ -96,7 +97,7 @@ env:
 
 jobs:
   Build-Armbian:
-    runs-on: ubuntu-24.04-arm # 默认使用 ARM64 架构，非 ARM64 设备请移除 '-arm'
+    runs-on: ubuntu-24.04 # 默认使用 ARM64 架构，非 ARM64 设备请移除 '-arm'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
