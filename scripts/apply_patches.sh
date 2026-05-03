@@ -74,32 +74,6 @@ else
 fi
 
 
-# ==============================================
-# 5. 全局构建脚本 / 配置的修改（原脚本后半部分）
-# ==============================================
-echo "    Applying global build script modifications..."
-
-sed -i '28s/^/#/' config/sources/families/include/meson_common.inc
-rm -f patch/kernel/archive/meson-6.12/0052-drm-meson-Describe-the-HDMI-PHY-frequency-limits-of-.patch
-
-sed -i 's|Armbian-unofficial|Armbian|g' lib/functions/configuration/main-config.sh
-sed -i 's|LOCALVERSION=-${BRANCH}-${LINUXFAMILY}|LOCALVERSION=|g' lib/functions/compilation/kernel-make.sh
-sed -i 's|${kernel_version}-${BRANCH}-${LINUXFAMILY}|${kernel_version}|g' lib/functions/compilation/kernel-debs.sh
-sed -i 's|linux-image-${BRANCH}-${LINUXFAMILY}|linux-image-${LINUXFAMILY}|g' lib/functions/compilation/kernel-debs.sh
-sed -i 's|linux-dtb-${BRANCH}-${LINUXFAMILY}|linux-dtb-${LINUXFAMILY}|g' lib/functions/compilation/kernel-debs.sh
-sed -i 's|linux-headers-${BRANCH}-${LINUXFAMILY}|linux-headers-${LINUXFAMILY}|g' lib/functions/compilation/kernel-debs.sh
-sed -i 's|linux-libc-dev-${BRANCH}-${LINUXFAMILY}|linux-libc-dev-${LINUXFAMILY}|g' lib/functions/compilation/kernel-debs.sh
-sed -i 's|linux-image-${BRANCH}-${LINUXFAMILY}|linux-image-${LINUXFAMILY}|g' lib/functions/artifacts/artifact-kernel.sh
-sed -i 's|linux-dtb-${BRANCH}-${LINUXFAMILY}|linux-dtb-${LINUXFAMILY}|g' lib/functions/artifacts/artifact-kernel.sh
-sed -i 's|linux-headers-${BRANCH}-${LINUXFAMILY}|linux-headers-${LINUXFAMILY}|g' lib/functions/artifacts/artifact-kernel.sh
-sed -i 's|linux-libc-dev-${BRANCH}-${LINUXFAMILY}|linux-libc-dev-${LINUXFAMILY}|g' lib/functions/artifacts/artifact-kernel.sh
-sed -i 's|IMAGE_TYPE=user-built|IMAGE_TYPE=stable|g' lib/functions/main/config-prepare.sh
-sed -i 's|1800000|1992000|g' config/sources/families/include/rockchip64_common.inc
-
-sed -i '252{/else/s/^/#/}' lib/functions/cli/utils-cli.sh
-sed -i '253{/display_alert/s/^/#/}' lib/functions/cli/utils-cli.sh
-sed -i '272{/display_alert/s/^/#/}' lib/functions/cli/utils-cli.sh
-sed -i '398{/display_alert/s/^/#/}' lib/functions/main/config-prepare.sh
 
 # 自定义版本号（基于日期）
 echo "$(date +%y).$(date +%m).1" > VERSION
