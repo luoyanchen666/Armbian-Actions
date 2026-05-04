@@ -174,7 +174,7 @@ jobs:
         run: |
           cp -r ${GITHUB_WORKSPACE}/userpatches /mnt/workdir/build/userpatches
           ls -la /mnt/workdir/build/
-          ls -la /mnt/workdir/build/userpatches/archive/
+          ls -la /mnt/workdir/build/userpatches/
           ./compile.sh build BOARD=${{ inputs.BOARD }} BRANCH=${{ inputs.BRANCH }} RELEASE=${{ inputs.RELEASE }} BUILD_MINIMAL=${{ inputs.BUILD_MINIMAL }} BUILD_DESKTOP=${{ inputs.BUILD_DESKTOP }} \
             PREFER_DOCKER=${{ inputs.PREFER_DOCKER }} DOCKER_ARMBIAN_BASE_IMAGE=${{ inputs.DOCKER_ARMBIAN_BASE_IMAGE }} COMPRESS_OUTPUTIMAGE=xz KERNEL_CONFIGURE=yes SHARE_LOG=yes DEB_COMPRESS=xz
 
