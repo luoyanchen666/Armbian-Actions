@@ -174,7 +174,7 @@ jobs:
         run: |
           cp -r ${GITHUB_WORKSPACE}/userpatches /mnt/workdir/build/
           ./compile.sh build BOARD=${{ inputs.BOARD }} BRANCH=${{ inputs.BRANCH }} RELEASE=${{ inputs.RELEASE }} BUILD_MINIMAL=${{ inputs.BUILD_MINIMAL }} BUILD_DESKTOP=${{ inputs.BUILD_DESKTOP }} \
-            PREFER_DOCKER=${{ inputs.PREFER_DOCKER }} DOCKER_ARMBIAN_BASE_IMAGE=${{ inputs.DOCKER_ARMBIAN_BASE_IMAGE }} COMPRESS_OUTPUTIMAGE=xz KERNEL_CONFIGURE=no SHARE_LOG=yes DEB_COMPRESS=xz
+            PREFER_DOCKER=${{ inputs.PREFER_DOCKER }} DOCKER_ARMBIAN_BASE_IMAGE=${{ inputs.DOCKER_ARMBIAN_BASE_IMAGE }} COMPRESS_OUTPUTIMAGE=xz KERNEL_CONFIGURE=yes SHARE_LOG=yes DEB_COMPRESS=xz
 
       - name: Prepare Image Metadata
         working-directory: /mnt/workdir/build/output/images
