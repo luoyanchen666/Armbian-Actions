@@ -100,7 +100,7 @@ env:
 
 jobs:
   Build-Armbian:
-    runs-on: ubuntu-24.04 
+    runs-on: ubuntu-armhf:jammy 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
