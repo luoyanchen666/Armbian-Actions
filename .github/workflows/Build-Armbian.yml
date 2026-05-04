@@ -9,7 +9,7 @@ on:
       BOARD:
         description: 'Target board'
         required: true
-        default: 'nanopct4'
+        default: 'orangepizero'
         type: choice
         options:
           - 'nanopct4'
@@ -23,7 +23,7 @@ on:
           - 'jp-tvbox'
           - 'nanopi-r3s'
           - 'onecloud'
-          - 'orangepizero '
+          - 'orangepizero'
       BRANCH:
         description: 'Kernel branch'
         default: 'current'
@@ -172,7 +172,7 @@ jobs:
           BRANCH: ${{ inputs.BRANCH }}
           RELEASE: ${{ inputs.RELEASE }}
         run: |
-          cp -r ${GITHUB_WORKSPACE}/userpatches /mnt/workdir/build/
+          cp -r ${GITHUB_WORKSPACE}/userpatches /mnt/workdir/build/userpatches
           ls -la /mnt/workdir/build/userpatches/archive/sunxi-6.18/
           ls -la /mnt/workdir/build/userpatches/archive/
           ./compile.sh build BOARD=${{ inputs.BOARD }} BRANCH=${{ inputs.BRANCH }} RELEASE=${{ inputs.RELEASE }} BUILD_MINIMAL=${{ inputs.BUILD_MINIMAL }} BUILD_DESKTOP=${{ inputs.BUILD_DESKTOP }} \
